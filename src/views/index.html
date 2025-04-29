@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gerenciador de Tarefas</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem;
+      background-color: #f2f2f2;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    form {
+      margin-bottom: 1rem;
+    }
+
+    input[type="text"] {
+      padding: 0.5rem;
+      width: 300px;
+    }
+
+    button {
+      padding: 0.5rem 1rem;
+      margin-left: 0.5rem;
+      cursor: pointer;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      background: #fff;
+      padding: 0.75rem;
+      margin-bottom: 0.5rem;
+      border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .delete-btn {
+      background: red;
+      color: white;
+      border: none;
+      padding: 0.3rem 0.7rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Gerenciador de Tarefas</h1>
+
+  <form id="taskForm">
+    <input type="text" id="taskInput" placeholder="Nova tarefa..." required />
+    <button type="submit">Adicionar</button>
+  </form>
+
+  <ul id="taskList"></ul>
+
+  <script>
+    const taskForm = document.getElementById("taskForm");
+    const taskInput = document.getElementById("taskInput");
+    const taskList = document.getElementById("taskList");
+
+    // Carrega tarefas ao abrir
+    window.onload = loadTasks;
+
+    async function loadTasks() {
+      taskList.innerHTML = "";
+      const res = await fetch("/api/tasks");
+      const tasks = await res.json();
+      tasks.forEach(task => renderTask(task));
+    }
+
+    function renderTask(task) {
+      const li = document.createElement("li");
+      li.innerHTML = `
+        ${task.title}
+        <button class="delete-btn" onclick="deleteTask('${task._id}')">X</button>
+      `;
+      taskList.appendChild(li);
+    }
+
+    taskForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const title = taskInput.value.trim();
+      if (!title) return;
+
+      const res = await fetch("/api/tasks", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ title })
+      });
+
+      const newTask = await res.json();
+      renderTask(newTask);
+      taskInput.value = "";
+    });
+
+    async function deleteTask(id) {
+      await fetch(`/api/tasks/${id}`, {
+        method: "DELETE"
+      });
+      loadTasks();
+    }
+  </script>
+</body>
+</html>
