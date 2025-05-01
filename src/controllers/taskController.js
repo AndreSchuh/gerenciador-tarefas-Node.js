@@ -31,3 +31,21 @@ exports.deleteTaskById = async (req,res) => {
         res.status(500).json({ error: "Erro ao remover a tarefa"})
     }
 }
+
+exports.updateTaskStatusById = async (req, res) => {
+    try {
+        const { done } = req.body;
+        const task = await Task.findByIdAndUpdate(
+            req.params.id,
+            { done },
+            { new: true }
+        );
+        if (!task) {
+            return res.status(404).json({ error: "Tarefa não encontrada" });
+        }
+
+        res.json(task);
+    } catch (err) {
+        res.status(500).json({ error: "Erro ao atualizar a tarefa" });
+    }
+}

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerenciador de Tarefas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Gerenciador de Tarefas</h1>
+
+    <div id="auth">
+        <div id="register" class="auth-content" style="display: block;">
+            <h2>Criar Nova Conta</h2>
+            <input type="email" id="registerEmail" placeholder="Email">
+            <input type="password" id="registerPassword" placeholder="Senha">
+            <button onclick="register()">Registrar</button>
+            <p class="auth-switch">Já tem uma conta? <a href="#" onclick="openTab('login')">Faça login</a></p>
+        </div>
+
+        <div id="login" class="auth-content" style="display: none;">
+            <h2>Acessar Sua Conta</h2>
+            <input type="email" id="loginEmail" placeholder="Email">
+            <input type="password" id="loginPassword" placeholder="Senha">
+            <button onclick="login()">Login</button>
+            <p class="auth-switch">Não tem uma conta? <a href="#" onclick="openTab('register')">Registre-se</a></p>
+        </div>
+    </div>
+
+    <div id="taskManager" style="display: none;">
+        <h2>Minhas Tarefas</h2>
+        <div class="task-input">
+            <input type="text" id="taskTitle" placeholder="Nova tarefa">
+            <button onclick="createTask()">Adicionar Tarefa</button>
+        </div>
+
+        <ul id="taskList"></ul>
+
+        <button class="logout-btn" onclick="logout()">Sair</button>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        function openTab(tabName) {
+            // Hide all auth content
+            const authContents = document.getElementsByClassName('auth-content');
+            for (let i = 0; i < authContents.length; i++) {
+                authContents[i].style.display = 'none';
+            }
+            
+            // Remove active class from all tabs
+            const tabButtons = document.getElementsByClassName('tab-button');
+            for (let i = 0; i < tabButtons.length; i++) {
+                tabButtons[i].classList.remove('active');
+            }
+            
+            // Show the current tab and mark button as active
+            document.getElementById(tabName).style.display = 'block';
+            event.currentTarget.classList.add('active');
+        }
+    </script>
+</body>
+</html>

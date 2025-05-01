@@ -17,12 +17,7 @@ app.use("/api", taskRoutes);
 
 app.use('/api/auth', authRoutes);
 
-app.use(express.static(path.join(__dirname, "views")));
-
-// Rota raiz redireciona para o index.html automaticamente
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "views", "index.html"));
-});
+app.use(express.static("public"));
 
 app.get('/', (req, res) => {
   res.send('Servidor rodando com Express!');

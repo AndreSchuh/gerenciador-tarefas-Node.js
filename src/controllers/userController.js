@@ -2,8 +2,6 @@ const User = require("../models/User");
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const User = require("../models/User");
-
 
 const SECRET = "secreto123";
 
@@ -34,3 +32,12 @@ exports.loginUser = async (req, res) => {
     res.json({ token });
 }
 
+exports.getUsers = async (req,res) => {
+    try{
+        const users = await User.find();
+        res.json(users);
+    
+    }catch(err) {
+        res.status(500).json({error: "Erro ao listar os usuários"});
+    }
+}
