@@ -26,7 +26,12 @@ Node.js · Express · MongoDB · Mongoose · JWT · bcrypt
 
 ## Como rodar
 Requisitos: Node.js e MongoDB rodando localmente.
+
+Variáveis de ambiente:
+- `JWT_SECRET`: chave usada para assinar os tokens (obrigatória)
+- `MONGO_URI`: conexão com o MongoDB (padrão: `mongodb://localhost:27017/gerenciador-tarefas`)
+
 ```bash
 npm install
-node src/server.js     # http://localhost:3000
+JWT_SECRET=sua_chave node src/server.js     # http://localhost:3000
 ```
